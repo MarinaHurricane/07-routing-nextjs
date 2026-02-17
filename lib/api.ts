@@ -44,7 +44,7 @@ interface fetchNotesResponseProps {
   totalPages: number;
 }
 
-export const fetchNotes = async(page: number = 1, searchText: string = "") => {
+export const fetchNotes = async(page: number = 1, searchText: string = "", tag?: Note["tag"]) => {
     const { data } = await axios.get<fetchNotesResponseProps>("/notes", {
         headers: {
         Authorization: `Bearer ${myKey}`
@@ -53,7 +53,9 @@ export const fetchNotes = async(page: number = 1, searchText: string = "") => {
         page, 
         perPage: 12,
         search: searchText,
+        tag: tag,
       }
     });
+    console.log(data);
     return data;
 };
