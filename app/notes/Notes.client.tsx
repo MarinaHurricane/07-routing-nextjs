@@ -14,6 +14,7 @@ import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import { useDebounce, useDebouncedCallback } from "use-debounce";
 import NoteList from "@/components/NoteList/NoteList";
+import { useParams } from "next/navigation";
 
 export default function NotesClient() {
     const [page,setPage] = useState(1);
@@ -23,15 +24,32 @@ export default function NotesClient() {
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
+    //     const { slug } = useParams<{ slug: string[] }>();
+    // const selectedCategory = slug[0] || "all";
+
+    // const category = selectedCategory === "all"? undefined : selectedCategory;
+
+
+const params = useParams<{ slug?: string[] }>();
+
+const selectedCategory = params?.slug?.[0];
+
+const category =
+  selectedCategory === "all" || !selectedCategory
+    ? undefined
+    : selectedCategory;
+
+
   const { data } = useQuery({
-    queryKey: ["notes", page, query],
-    queryFn: () => fetchNotes(page, query),
+    queryKey: ["notes", page, query, category],
+    queryFn: () => fetchNotes(page, query, category),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
 
   const notes = data?.notes || [];
   const totalPages = data?.totalPages || 0;
+  console.log("total pages:", totalPages);
 
      const handleSearch = (newQuery: string) => {
         setQuery(newQuery);

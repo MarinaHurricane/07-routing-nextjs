@@ -9,8 +9,11 @@ export default function FiltersLayout({
 }>) {
   return (
     <>
+      
+      <div>
       <aside>{sidebar}</aside>
       <main>{children}</main>
+      </div>
       {/* {modal} */}
     </>
   );
