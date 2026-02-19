@@ -1,42 +1,44 @@
+"use client";
 
-'use client';
+import css from "./Modal.module.css";
+import { useEffect } from "react";
 
-import css from './Modal.module.css';
-import { useEffect } from 'react';
-
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
-  onClose: () => void;
 };
 
-const Modal = ({ children, onClose }: Props) => {
+const Modal = ({ children }: Props) => {
+
+  const router = useRouter();
+
+  const close = () => router.back();
 
     useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
-        onClose();
+       router.back();
       }
     };
-
-    document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, [router]);
 
-  const router = useRouter();
-  
-  const close = () => router.back();
+
 
   return (
-    <div  className={css.backdrop}
+    <div
+      className={css.backdrop}
       role="dialog"
-      aria-modal="true">
+      aria-modal="true"
+      onClick={close}
+    >
       <div className={css.modal}>
         {children}
         <button onClick={close}>Close</button>
