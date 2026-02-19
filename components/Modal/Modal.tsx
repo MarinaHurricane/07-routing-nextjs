@@ -2,14 +2,33 @@
 'use client';
 
 import css from './Modal.module.css';
+import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-const ModalParalel = ({ children }: Props) => {
+const Modal = ({ children, onClose }: Props) => {
+
+    useEffect(() => {
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   const router = useRouter();
   
   const close = () => router.back();
@@ -26,4 +45,4 @@ const ModalParalel = ({ children }: Props) => {
   );
 };
 
-export default ModalParalel;
+export default Modal;

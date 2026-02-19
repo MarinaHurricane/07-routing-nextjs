@@ -3,7 +3,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import css from "./notes.module.css";
-import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { deleteNote } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
@@ -12,33 +11,26 @@ import { useState } from "react";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
 import NoteList from "@/components/NoteList/NoteList";
 import { useParams } from "next/navigation";
 
 export default function NotesClient() {
-    const [page,setPage] = useState(1);
-    const[query, setQuery] = useState('');
-    const[isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const handleOpenModal = () => setIsModalOpen(true);
-    const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
-    //     const { slug } = useParams<{ slug: string[] }>();
-    // const selectedCategory = slug[0] || "all";
+  const params = useParams<{ slug?: string[] }>();
 
-    // const category = selectedCategory === "all"? undefined : selectedCategory;
+  const selectedCategory = params?.slug?.[0];
 
-
-const params = useParams<{ slug?: string[] }>();
-
-const selectedCategory = params?.slug?.[0];
-
-const category =
-  selectedCategory === "all" || !selectedCategory
-    ? undefined
-    : selectedCategory;
-
+  const category =
+    selectedCategory === "all" || !selectedCategory
+      ? undefined
+      : selectedCategory;
 
   const { data } = useQuery({
     queryKey: ["notes", page, query, category],
@@ -50,14 +42,12 @@ const category =
   const notes = data?.notes || [];
   const totalPages = data?.totalPages || 0;
 
-     const handleSearch = (newQuery: string) => {
-        setQuery(newQuery);
-        setPage(1);
-    };
+  const handleSearch = (newQuery: string) => {
+    setQuery(newQuery);
+    setPage(1);
+  };
 
-
-    const debouncedSetQuery = useDebouncedCallback(handleSearch, 500);
-
+  const debouncedSetQuery = useDebouncedCallback(handleSearch, 500);
 
   const queryClient = useQueryClient();
 
@@ -73,21 +63,25 @@ const category =
 
   return (
     <div className={css.notesContainer}>
-    <div className={css.toolbar}>
-    <SearchBox onSearch={debouncedSetQuery}/>
-         {totalPages > 1 && <Pagination
+      <div className={css.toolbar}>
+        <SearchBox onSearch={debouncedSetQuery} />
+        {totalPages > 1 && (
+          <Pagination
             page={page}
             totalPages={totalPages}
             onPageChange={setPage}
-          />}
-            <button className={css.createButton} onClick={handleOpenModal}>
+          />
+        )}
+        <button className={css.createButton} onClick={handleOpenModal}>
           Create note +
         </button>
-        </div>
-        {isModalOpen && <Modal onClose={handleCloseModal}>
-            <NoteForm onClose={handleCloseModal}/>
-        </Modal> }
-        <NoteList notes={notes}/>
+      </div>
+      {isModalOpen && (
+        <Modal onClose={handleCloseModal}>
+          <NoteForm onClose={handleCloseModal} />
+        </Modal>
+      )}
+      <NoteList notes={notes} />
     </div>
   );
 }
