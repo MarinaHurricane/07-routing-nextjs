@@ -10,27 +10,24 @@ type Props = {
 };
 
 const Modal = ({ children }: Props) => {
-
   const router = useRouter();
 
   const close = () => router.back();
 
-    useEffect(() => {
+  useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
-       router.back();
+        router.back();
       }
     };
-        document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [router]);
-
-
 
   return (
     <div
@@ -39,7 +36,8 @@ const Modal = ({ children }: Props) => {
       aria-modal="true"
       onClick={close}
     >
-      <div className={css.modal}>
+      <div className={css.modal} 
+      onClick={(e) => e.stopPropagation()}>
         {children}
         <button onClick={close}>Close</button>
       </div>

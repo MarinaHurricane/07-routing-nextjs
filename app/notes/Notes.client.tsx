@@ -77,7 +77,7 @@ export default function NotesClient() {
         </button>
       </div>
       {isModalOpen && (
-        <Modal onClose={handleCloseModal}>
+        <Modal>
           <NoteForm onClose={handleCloseModal} />
         </Modal>
       )}
