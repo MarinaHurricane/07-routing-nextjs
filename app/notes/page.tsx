@@ -1,4 +1,3 @@
-import css from "./NoteList.module.css";
 import { fetchNotes } from  "@/lib/api";
 import {
   QueryClient,

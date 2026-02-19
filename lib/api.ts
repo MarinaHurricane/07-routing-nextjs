@@ -36,7 +36,6 @@ export const fetchNoteById = async (id: Note["id"]) => {
       Authorization: `Bearer ${myKey}`,
     },
   });
-  console.log(data);
   return data;
 };
 
@@ -57,6 +56,5 @@ export const fetchNotes = async(page: number = 1, searchText: string = "", tag?:
         tag: tag,
       }
     });
-    console.log(data);
     return data;
 };

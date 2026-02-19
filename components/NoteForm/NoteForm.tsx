@@ -54,7 +54,6 @@ export default function NoteForm( { onClose }: NoteFormProps) {
     mutate(values, {
       onSuccess: () => actions.resetForm(),
     });
-    console.log(values);
   };
 
   return (

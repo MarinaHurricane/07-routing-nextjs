@@ -49,7 +49,6 @@ const category =
 
   const notes = data?.notes || [];
   const totalPages = data?.totalPages || 0;
-  console.log("total pages:", totalPages);
 
      const handleSearch = (newQuery: string) => {
         setQuery(newQuery);
