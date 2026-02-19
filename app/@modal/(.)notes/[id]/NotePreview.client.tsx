@@ -1,22 +1,40 @@
-import { fetchNoteById } from "@/lib/api";
-import Modal from "@/components/Modal/Modal";
-import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
+"use client";
 
-interface NotePreviewProps {
-  params: Promise<{ id: string }>;
- 
+import { fetchNoteById } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import css from "./NoteDetails.module.css";
+
+interface NoteDetailsClientProps {
+  id: string;
 }
 
-export default async function NotePreview({ params }: NotePreviewProps) {
+export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
 
-  const { id }  = await params;
-  const note = await fetchNoteById(id);
-  console.log(note);
+  const {
+    data: note,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+  });
+
+  if (isLoading) return <p>Loading, please wait...</p>;
+  if (isError) return <p>Something went wrong.</p>;
+  if (!note) return <p>Something went wrong.</p>;
 
   return (
-    <Modal>
-      <NoteDetailsClient id={note.id} />
-    </Modal>
+    <div className={css.container}>
+      <div className={css.item}>
+        <div className={css.header}>
+          <h2>{note.title}</h2>
+        </div>
+        <p className={css.tag}>{note.tag}</p>
+        <p className={css.content}>{note.content}</p>
+        <p className={css.date}>{note.createdAt}</p>
+      </div>
+    </div>
   );
 }
 
