@@ -34,8 +34,8 @@ export default async function Notelist( { params, searchParams }: NoteListProps)
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotesClient 
-        page={currentPage}
-        query={searchQuery}
+        initialPage={currentPage}
+        searchQuery={searchQuery}
         category={category}
         />
       </HydrationBoundary>
