@@ -5,6 +5,8 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import NoteDetailsClient from "./NoteDetails.client";
+import Modal from "@/components/Modal/Modal";
+
 
 interface NoteDetailsProps {
   params: Promise<{ id: string }>;
@@ -21,8 +23,10 @@ export default async function NoteDetails({ params }: NoteDetailsProps) {
   });
 
   return (
+    <Modal>
     <HydrationBoundary state={dehydrate(queryClient)}>
       <NoteDetailsClient id={id}/>
     </HydrationBoundary>
+    </Modal>
   );
 }

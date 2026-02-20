@@ -13,28 +13,36 @@ import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import { useDebouncedCallback } from "use-debounce";
 import NoteList from "@/components/NoteList/NoteList";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 
-export default function NotesClient() {
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
+interface NotesClientProps {
+  initialPage: number;
+  searchQuery: string;
+  category?: string;
+}
+
+export default function NotesClient( { initialPage, searchQuery, category }: NotesClientProps) {
+  const [page, setPage] = useState(initialPage);
+  const [query, setQuery] = useState(searchQuery);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const params = useParams<{ slug?: string[] }>();
+  // const params = useParams<{ slug?: string[] }>();
 
-  const selectedCategory = params?.slug?.[0];
+  // const selectedCategory = params?.slug?.[0];
 
-  const category =
-    selectedCategory === "all" || !selectedCategory
-      ? undefined
-      : selectedCategory;
+  // const category =
+  //   selectedCategory === "all" || !selectedCategory
+  //     ? undefined
+  //     : selectedCategory;
+
+  const selectedCategory = !category || category === "all" ? undefined : category;
 
   const { data } = useQuery({
-    queryKey: ["notes", page, query, category],
-    queryFn: () => fetchNotes(page, query, category),
+    queryKey: ["notes", page, query, selectedCategory],
+    queryFn: () => fetchNotes(page, query, selectedCategory),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });

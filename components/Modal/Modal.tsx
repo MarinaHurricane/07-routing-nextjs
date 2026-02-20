@@ -4,6 +4,7 @@ import css from "./Modal.module.css";
 import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 
 type Props = {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ const Modal = ({ children }: Props) => {
     };
   }, [router]);
 
-  return (
+  return createPortal(
     <div
       className={css.backdrop}
       role="dialog"
@@ -39,9 +40,10 @@ const Modal = ({ children }: Props) => {
       <div className={css.modal} 
       onClick={(e) => e.stopPropagation()}>
         {children}
-        <button onClick={close}>Close</button>
+        <button className={css.backBtn} onClick={close}>Close</button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

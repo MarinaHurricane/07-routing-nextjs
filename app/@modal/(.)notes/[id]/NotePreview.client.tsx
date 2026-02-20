@@ -3,12 +3,14 @@
 import { fetchNoteById } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import css from "./NoteDetails.module.css";
+import Modal from "@/components/Modal/Modal";
+// import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
 
 interface NoteDetailsClientProps {
   id: string;
 }
 
-export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
+export default function NotePreviewClient( { id }: NoteDetailsClientProps) {
 
   const {
     data: note,
@@ -25,6 +27,7 @@ export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
   if (!note) return <p>Something went wrong.</p>;
 
   return (
+    <Modal>
     <div className={css.container}>
       <div className={css.item}>
         <div className={css.header}>
@@ -35,6 +38,7 @@ export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
         <p className={css.date}>{note.createdAt}</p>
       </div>
     </div>
+    </Modal>
   );
 }
 
