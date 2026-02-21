@@ -3,12 +3,15 @@
 import { fetchNoteById } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import css from "./NoteDetails.module.css";
+import Modal from "@/components/Modal/Modal";
+import { useRouter } from "next/navigation";
 
 interface NoteDetailsClientProps {
   id: string;
 }
 
 export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
+  const router = useRouter();
 
   const {
     data: note,
@@ -25,6 +28,7 @@ export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
   if (!note) return <p>Something went wrong.</p>;
 
   return (
+    <Modal onClose={() => router.back()}>
     <div className={css.container}>
       <div className={css.item}>
         <div className={css.header}>
@@ -35,6 +39,7 @@ export default function NoteDetailsClient( { id }: NoteDetailsClientProps) {
         <p className={css.date}>{note.createdAt}</p>
       </div>
     </div>
+    </Modal>
   );
 }
 
