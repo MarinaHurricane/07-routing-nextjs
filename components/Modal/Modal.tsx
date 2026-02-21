@@ -20,7 +20,7 @@ const Modal = ({ children, onClose }: Props) => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
-        router.back();
+        onClose();
       }
     };
     document.addEventListener("keydown", handleKeyDown);
