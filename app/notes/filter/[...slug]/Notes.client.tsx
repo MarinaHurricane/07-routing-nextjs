@@ -85,11 +85,12 @@ export default function NotesClient( { initialPage, searchQuery, category }: Not
         </button>
       </div>
       {isModalOpen && (
-        <Modal>
-          <NoteForm onClose={handleCloseModal} />
+        <Modal onClose={handleCloseModal} >
+        <NoteForm onClose={handleCloseModal} />
         </Modal>
       )}
-      <NoteList notes={notes} />
+      {notes.length > 0 && <NoteList notes={notes} />}
+      {notes.length === 0 && <p>No notes found.</p>}
     </div>
   );
 }

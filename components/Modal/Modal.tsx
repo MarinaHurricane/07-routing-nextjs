@@ -8,12 +8,13 @@ import { createPortal } from "react-dom";
 
 type Props = {
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-const Modal = ({ children }: Props) => {
-  const router = useRouter();
+const Modal = ({ children, onClose }: Props) => {
+  // const router = useRouter();
 
-  const close = () => router.back();
+  // const close = () => router.back();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -28,19 +29,19 @@ const Modal = ({ children }: Props) => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [router]);
+  }, [onClose]);
 
   return createPortal(
     <div
       className={css.backdrop}
       role="dialog"
       aria-modal="true"
-      onClick={close}
+      onClick={onClose}
     >
       <div className={css.modal} 
       onClick={(e) => e.stopPropagation()}>
         {children}
-        <button className={css.backBtn} onClick={close}>Close</button>
+        <button className={css.backBtn} onClick={onClose}>Close</button>
       </div>
     </div>,
     document.body
