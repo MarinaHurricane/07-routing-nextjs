@@ -3,7 +3,6 @@
 import css from "./Modal.module.css";
 import { useEffect } from "react";
 
-import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 
 type Props = {
@@ -12,10 +11,6 @@ type Props = {
 };
 
 const Modal = ({ children, onClose }: Props) => {
-  // const router = useRouter();
-
-  // const close = () => router.back();
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,13 +33,14 @@ const Modal = ({ children, onClose }: Props) => {
       aria-modal="true"
       onClick={onClose}
     >
-      <div className={css.modal} 
-      onClick={(e) => e.stopPropagation()}>
+      <div className={css.modal} onClick={(e) => e.stopPropagation()}>
         {children}
-        <button className={css.backBtn} onClick={onClose}>Close</button>
+        <button className={css.backBtn} onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

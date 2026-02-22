@@ -21,7 +21,11 @@ interface NotesClientProps {
   category?: string;
 }
 
-export default function NotesClient( { initialPage, searchQuery, category }: NotesClientProps) {
+export default function NotesClient({
+  initialPage,
+  searchQuery,
+  category,
+}: NotesClientProps) {
   const [page, setPage] = useState(initialPage);
   const [query, setQuery] = useState(searchQuery);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -29,16 +33,8 @@ export default function NotesClient( { initialPage, searchQuery, category }: Not
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  // const params = useParams<{ slug?: string[] }>();
-
-  // const selectedCategory = params?.slug?.[0];
-
-  // const category =
-  //   selectedCategory === "all" || !selectedCategory
-  //     ? undefined
-  //     : selectedCategory;
-
-  const selectedCategory = !category || category === "all" ? undefined : category;
+  const selectedCategory =
+    !category || category === "all" ? undefined : category;
 
   const { data } = useQuery({
     queryKey: ["notes", page, query, selectedCategory],
@@ -85,8 +81,8 @@ export default function NotesClient( { initialPage, searchQuery, category }: Not
         </button>
       </div>
       {isModalOpen && (
-        <Modal onClose={handleCloseModal} >
-        <NoteForm onClose={handleCloseModal} />
+        <Modal onClose={handleCloseModal}>
+          <NoteForm onClose={handleCloseModal} />
         </Modal>
       )}
       {notes.length > 0 && <NoteList notes={notes} />}
