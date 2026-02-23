@@ -15,35 +15,36 @@ import { useDebouncedCallback } from "use-debounce";
 import NoteList from "@/components/NoteList/NoteList";
 // import { useParams } from "next/navigation";
 
+// interface NotesClientProps {
+//   initialPage: number;
+//   searchQuery: string;
+//   category?: string;
+// }
+
 interface NotesClientProps {
-  initialPage: number;
-  searchQuery: string;
-  category?: string;
+  tag: string;
 }
 
-export default function NotesClient({
-  initialPage,
-  searchQuery,
-  category,
-}: NotesClientProps) {
-  const [page, setPage] = useState(initialPage);
-  const [query, setQuery] = useState(searchQuery);
+export default function NotesClient({ tag }: NotesClientProps) {
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const selectedCategory =
-    !category || category === "all" ? undefined : category;
+  const selectedTag = !tag ? undefined : tag;
 
   const { data } = useQuery({
-    queryKey: ["notes", page, query, selectedCategory],
-    queryFn: () => fetchNotes(page, query, selectedCategory),
+    queryKey: ["notes", page, query, selectedTag],
+    queryFn: () => fetchNotes(page, query, selectedTag),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
 
   const notes = data?.notes || [];
+  console.log(data);
+  console.log(selectedTag);
   const totalPages = data?.totalPages || 0;
 
   const handleSearch = (newQuery: string) => {

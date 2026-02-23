@@ -56,5 +56,6 @@ export const fetchNotes = async(page: number = 1, searchText: string = "", tag?:
         tag: tag,
       }
     });
+    console.log(data);
     return data;
 };

@@ -18,19 +18,19 @@ export default async function Notelist({
   const { slug } = await params;
   const { page, query } = await searchParams;
 
-  const category = slug?.[0];
+  const tag = slug?.[0];
   const currentPage = Number(page ?? 1);
   const searchQuery = query ?? "";
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["notes", currentPage, searchQuery, category],
+    queryKey: ["notes", currentPage, searchQuery, tag],
     queryFn: () =>
       fetchNotes(
         currentPage,
         searchQuery,
-        category === "all" ? undefined : category,
+        !tag ? undefined : tag,
       ),
   });
 
@@ -38,9 +38,7 @@ export default async function Notelist({
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotesClient
-          initialPage={currentPage}
-          searchQuery={searchQuery}
-          category={category}
+          tag={tag}
         />
       </HydrationBoundary>
     </>
