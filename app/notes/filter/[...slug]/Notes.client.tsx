@@ -33,7 +33,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const selectedTag = !tag ? undefined : tag;
+  const selectedTag = !tag || tag === "all" ? undefined : tag;
 
   const { data } = useQuery({
     queryKey: ["notes", page, query, selectedTag],

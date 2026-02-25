@@ -30,7 +30,7 @@ export default async function Notelist({
       fetchNotes(
         currentPage,
         searchQuery,
-        !tag ? undefined : tag,
+        !tag || tag === "all" ? undefined : tag,
       ),
   });
 
@@ -38,7 +38,7 @@ export default async function Notelist({
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotesClient
-          tag={tag}
+        tag={tag}
         />
       </HydrationBoundary>
     </>
