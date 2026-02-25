@@ -1,3 +1,5 @@
+import css from './layout.module.css'
+
 export default function FiltersLayout({
   children,
   sidebar,
@@ -7,10 +9,11 @@ export default function FiltersLayout({
 }>) {
   return (
     <>
-      <div>
-        <aside>{sidebar}</aside>
-        <main>{children}</main>
+      <div className={css.container}>
+        <aside className={css.sidebar}>{sidebar}</aside>
+        <main className={css.notesWrapper}>{children}</main>
       </div>
     </>
   );
 }
+
